@@ -59,4 +59,74 @@ class Game {
               var x =200;
               var y;
         
+                      
+              for(var plr in allPlayers){
+                //add 1 to the index for every loop
+                index = index + 1 ;
+                x = 200 + (index * 200) + allPlayers[plr].xPos;
+                y = displayHeight - allPlayers[plr].distance ;
+                //position the cars a little away from each other in x direction
+               // x = x + 200;
+                //use data form the database to display the cars in y direction
+              // y = displayHeight - allPlayers[plr].distance;
+                cars[index-1].x = x;
+                cars[index-1].y = y;
+                textAlign(CENTER);
+                textSize(20);
+                text(allPlayers[plr].name, cars[index - 1].x, cars[index - 1].y + 75);
+                if (index === player.index){
+                  cars[index - 1].shapeColor = "red";
+                  camera.position.x = displayWidth/2;
+                  camera.position.y = cars[index-1].y
+                           if( cars[index - 1].isTouching(obstacles)){
+                                                s.play();
+
+                    yVel -= 0.9;}
+                }
+               
+              }
+        
+            }
+        console.log(displayHeight)
+        console.log(  player.distance  )
+            if(player.distance < 3700){
+              if(keyIsDown(38) && player.index !== null){
+                  yVel += 0.9;
+                  if(keyIsDown(37)){
+                      xVel -= 0.2;
+                  }
+                  if(keyIsDown(39)){
+                      xVel += 0.2;
+                  }
+              }else if(keyIsDown(38) && yVel > 0 && player.index !== null){
+                  yVel -= 0.1;
+                  xVel *= 0.9;
+              }else{
+                  yVel *= 0.985;
+                  xVel *= 0.985;
+              }
+            }else if(passedFinish === false){
+              yVel *= 0.7;
+              xVel *= 0.7;
+              Player.updateFinishedPlayers();
+              player.place = finishedPlayers;
+  
+              player.update();
+              passedFinish = true;
+          }else{
+              yVel *= 0.8;
+              xVel *= 0.8;
+          }
+  
+        
+          //move the car
+          player.distance += yVel;
+          yVel *= 0.98;
+          player.xPos += xVel;
+          xVel *= 0.985;
+          player.update();
+          //display sprites
+          drawSprites();
+        }
+           
              
